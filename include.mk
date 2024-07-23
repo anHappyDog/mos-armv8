@@ -7,11 +7,10 @@ ifeq ($(ARCH), arm64)
 	CROSS_COMPILE := aarch64-none-elf-
 	QEMU := qemu-system-aarch64
 else
-	CROSS_COMPILE := arm-none-eabi-
+	CROSS_COMPILE := arm-linux-gnueabihf-
 	QEMU := qemu-system-arm
 endif
 
-CROSS_COMPILE := aarch64-none-elf-
 
 CC := $(CROSS_COMPILE)gcc
 LD := $(CROSS_COMPILE)ld
@@ -21,7 +20,7 @@ GDB := $(CROSS_COMPILE)gdb
 
 LD_SCRIPT := kernel.ld
 
-CFLAGS := -Wall -nostdinc -nostdlib -nostartfiles -ffreestanding
+CFLAGS := -Wall -nostdlib -nostartfiles -ffreestanding
 
 LDFLAGS := -T $(LD_SCRIPT) -nostdlib
 
