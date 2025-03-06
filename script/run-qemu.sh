@@ -1,6 +1,7 @@
 #!/bin/bash
 QEMU="${USING_QEMU:-qemu-system-aarch64}"
 DEVICE="${DEVICE:-raspi4b}"
+CPU="${CPU:-cortex-a72}"
 SMP="${QEMU_SMP:-4}"
 MEM="${QEMU_MEM:-2G}"
 IMG_FILE="${QEMU_IMG:-fs.img}"
@@ -14,6 +15,7 @@ MODE="${QEMU_MODE:-run}"
 if [ "$MODE" == "debug" ]; then
     exec "$QEMU" \
         -smp "$SMP" \
+        -cpu "$CPU" \
         -m "$MEM" \
         -nographic \
         -M "$DEVICE" \
@@ -24,6 +26,7 @@ if [ "$MODE" == "debug" ]; then
 elif [ "$MODE" == "dumpdtb" ]; then
     "$QEMU" \
         -smp "$SMP" \
+                -cpu "$CPU" \
         -m "$MEM" \
         -nographic \
         -M "$DEVICE",dumpdtb="$DTB_FILE"
@@ -32,6 +35,7 @@ elif [ "$MODE" == "dumpdtb" ]; then
 elif [ "$MODE" == "run" ]; then
     exec "$QEMU" \
         -smp "$SMP" \
+                -cpu "$CPU" \
         -m "$MEM" \
         -nographic \
         -M "$DEVICE" \

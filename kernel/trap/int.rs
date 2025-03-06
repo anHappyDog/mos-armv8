@@ -1,4 +1,23 @@
-use core::arch;
+use core::arch::{self, naked_asm};
+
+use crate::{
+    dev::{
+        gic::{Gic, gic400::GIC_400},
+        mmio::MMIO,
+    },
+    log,
+    register::el1::{CNTFRQ_EL0, CNTP_CTL_EL0, CNTP_TVAL_EL0},
+};
+
+pub fn enable_timer_interrupt() {
+    let frq = CNTFRQ_EL0::read();
+    CNTP_TVAL_EL0::write(frq);
+    CNTP_CTL_EL0::write(0x1);
+    unsafe {
+        arch::asm!(" msr DAIFClr, #2");
+    }
+    loop {}
+}
 
 #[inline]
 pub fn save_and_disable_interrupts() -> u64 {
